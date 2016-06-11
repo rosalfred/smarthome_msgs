@@ -2,8 +2,8 @@
 Changelog for package smarthome_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2016-06-11)
+------------------
 * Rename Info message
 * Contributors: Erwan Le Huitouze
 
