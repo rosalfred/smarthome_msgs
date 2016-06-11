@@ -24,7 +24,7 @@ add_message_files(
   DIRECTORY
   msg
   FILES
-  NodeInfo.msg
+  DeviceInfo.msg
   NodeState.msg
 )
 
