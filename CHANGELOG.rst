@@ -2,8 +2,8 @@
 Changelog for package smarthome_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.3 (2016-06-21)
+------------------
 * Update Readme
 * Merge branch 'master' of github.com:rosalfred/smarthome_msgs
 * Update eclipse project.
