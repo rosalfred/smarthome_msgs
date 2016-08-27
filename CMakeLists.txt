@@ -1,18 +1,19 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
+
 project(smarthome_msgs)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
+if(NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
+endif()
 
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+## Find ament macros and libraries
+find_package(ament_cmake REQUIRED)
 
+find_package(builtin_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 #catkin_python_setup()
 
 #######################################
@@ -20,12 +21,9 @@ find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)
 #######################################
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  DIRECTORY
-  msg
-  FILES
-  DeviceInfo.msg
-  NodeState.msg
+set(msg_files
+  "msg/DeviceInfo.msg"
+  "msg/NodeState.msg"
 )
 
 ## Generate services in the 'srv' folder
@@ -37,26 +35,10 @@ add_message_files(
 #)
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
-
-###################################
-## catkin specific configuration ##
-###################################
-## The catkin_package macro generates cmake config files for your package
-## Declare things to be passed to dependent projects
-## INCLUDE_DIRS: uncomment this if you package contains header files
-## LIBRARIES: libraries you create in this project that dependent projects also need
-## CATKIN_DEPENDS: catkin_packages dependent projects also need
-## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES smarthome_msgs
-  CATKIN_DEPENDS message_runtime std_msgs
-# roscpp rospy std_msgs
-#  DEPENDS system_lib
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  DEPENDENCIES builtin_interfaces
+  ADD_LINTER_TESTS
 )
 
 ###########
@@ -67,7 +49,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+  ${std_msgs_INCLUDE_DIRS}
 )
 
 ## Declare a cpp library
@@ -84,33 +66,30 @@ include_directories(
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(smarthome_msgs_node
-#   ${catkin_LIBRARIES}
+#   ${std_msgs_LIBRARIES}
 # )
 
 #############
 ## Install ##
 #############
 
-# all install targets should use catkin DESTINATION variables
-# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
-
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 #install(PROGRAMS
 #  scripts/my_python_script
-#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#  DESTINATION lib/${PROJECT_NAME}
 #)
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS smarthome_msgs smarthome_msgs_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#   ARCHIVE DESTINATION lib
+#   LIBRARY DESTINATION lib
+#   RUNTIME DESTINATION lib/${PROJECT_NAME}
 # )
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   DESTINATION include/${PROJECT_NAME}
 #   FILES_MATCHING PATTERN "*.h"
 #   PATTERN ".svn" EXCLUDE
 # )
@@ -119,7 +98,7 @@ include_directories(
 # install(FILES
 #   # myfile1
 #   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+#   DESTINATION share/${PROJECT_NAME}
 # )
 
 #############
@@ -127,10 +106,21 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_smarthome_msgs.cpp)
+# ament_add_gtest(${PROJECT_NAME}-test test/test_smarthome_msgs.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+# ament_add_nosetests(test)
+
+###################################
+## ament specific configuration ##
+###################################
+## The ament_package macro generates cmake config files for your package
+## Declare things to be passed to dependent projects
+## CONFIG_EXTRAS: uncomment this if you package contains argument
+ament_package(
+#  CONFIG_EXTRAS 
+)
+
